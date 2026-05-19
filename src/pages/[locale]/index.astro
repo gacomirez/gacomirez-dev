@@ -106,7 +106,7 @@ const experienceEntries = allExperience
             <p class="project-card__description">{p.description}</p>
             <div class="project-card__techs">
               {p.techStack.map((tech: string) => (
-                <span class="skill-badge">{tech}</span>
+                <SkillBadge name={tech} />
               ))}
             </div>
           </article>
@@ -213,17 +213,6 @@ const experienceEntries = allExperience
     flex-wrap: wrap;
     gap: var(--space-xs);
     margin-top: auto;
-  }
-
-  .skill-badge {
-    display: inline-block;
-    padding: 2px var(--space-sm);
-    font-size: 0.75rem;
-    font-weight: 500;
-    border-radius: 999px;
-    background-color: var(--color-bg-alt);
-    color: var(--color-text-muted);
-    border: 1px solid var(--color-border);
   }
 
   @media (max-width: 640px) {
