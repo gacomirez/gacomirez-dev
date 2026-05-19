@@ -21,7 +21,7 @@ const { title, subtitle, ctaText, ctaLink } = Astro.props;
 
 <style>
   .hero {
-    background: linear-gradient(135deg, var(--color-bg) 0%, var(--color-bg-alt) 50%, #e0e7ff 100%);
+    background: var(--color-hero-gradient);
     padding-block: var(--space-3xl);
     text-align: center;
     position: relative;
@@ -36,7 +36,7 @@ const { title, subtitle, ctaText, ctaLink } = Astro.props;
     width: 400px;
     height: 400px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(37, 99, 235, 0.03) 0%, transparent 70%);
+    background: radial-gradient(circle, var(--color-hero-glow-primary) 0%, transparent 70%);
     pointer-events: none;
   }
 
@@ -48,7 +48,7 @@ const { title, subtitle, ctaText, ctaLink } = Astro.props;
     width: 300px;
     height: 300px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(245, 158, 11, 0.03) 0%, transparent 70%);
+    background: radial-gradient(circle, var(--color-hero-glow-accent) 0%, transparent 70%);
     pointer-events: none;
   }
 

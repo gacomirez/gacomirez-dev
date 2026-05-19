@@ -97,6 +97,11 @@ ol {
   --radius: 8px;
   --radius-lg: 12px;
 
+  /* Hero gradient (light default) */
+  --color-hero-gradient: linear-gradient(135deg, var(--color-bg) 0%, var(--color-bg-alt) 50%, #e0e7ff 100%);
+  --color-hero-glow-primary: rgba(37, 99, 235, 0.03);
+  --color-hero-glow-accent: rgba(245, 158, 11, 0.03);
+
   /* Transition durations */
   --transition-fast: 0.2s;
   --transition-base: 0.3s;
@@ -295,15 +300,7 @@ h3 {
     --color-error: #f87171;
   }
 
-  .hero {
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #1e1b4b 100%) !important;
-  }
-
-  .hero::before {
-    background: radial-gradient(circle, rgba(96, 165, 250, 0.06) 0%, transparent 70%) !important;
-  }
-
-  .hero::after {
-    background: radial-gradient(circle, rgba(251, 191, 36, 0.05) 0%, transparent 70%) !important;
-  }
+  --color-hero-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #1e1b4b 100%);
+  --color-hero-glow-primary: rgba(96, 165, 250, 0.06);
+  --color-hero-glow-accent: rgba(251, 191, 36, 0.05);
 }
