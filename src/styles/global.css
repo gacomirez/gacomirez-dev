@@ -57,7 +57,9 @@ ol {
 
 /* ===== Custom Properties ===== */
 :root {
-  /* Colors */
+  color-scheme: light dark;
+
+  /* Colors — Light (default) */
   --color-primary: #2563eb;
   --color-primary-hover: #1d4ed8;
   --color-text: #1f2937;
@@ -275,5 +277,33 @@ h3 {
     --font-size-3xl: 2rem;
     --font-size-2xl: 1.625rem;
     --font-size-xl: 1.25rem;
+  }
+}
+
+/* ===== Dark Mode ===== */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-primary: #60a5fa;
+    --color-primary-hover: #93c5fd;
+    --color-text: #f1f5f9;
+    --color-text-muted: #94a3b8;
+    --color-bg: #0f172a;
+    --color-bg-alt: #1e293b;
+    --color-border: #334155;
+    --color-accent: #fbbf24;
+    --color-success: #34d399;
+    --color-error: #f87171;
+  }
+
+  .hero {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #1e1b4b 100%) !important;
+  }
+
+  .hero::before {
+    background: radial-gradient(circle, rgba(96, 165, 250, 0.06) 0%, transparent 70%) !important;
+  }
+
+  .hero::after {
+    background: radial-gradient(circle, rgba(251, 191, 36, 0.05) 0%, transparent 70%) !important;
   }
 }
