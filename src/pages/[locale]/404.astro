@@ -1,0 +1,102 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import { SITE } from '../../config';
+import es from '../../i18n/es.json';
+import en from '../../i18n/en.json';
+
+export async function getStaticPaths() {
+  return [
+    { params: { locale: 'es' } },
+    { params: { locale: 'en' } },
+  ];
+}
+
+const { locale } = Astro.params;
+const dicts: Record<string, typeof es> = { es, en };
+const t = dicts[locale!];
+const canonicalUrl = `${SITE.url}/${locale}/404/`;
+const alternateUrls: Record<string, string> = {
+  es: `${SITE.url}/es/404/`,
+  en: `${SITE.url}/en/404/`,
+};
+---
+
+<BaseLayout
+  locale={locale!}
+  title={`${t['404'].title} — ${SITE.title}`}
+  description={t['404'].message}
+  canonicalUrl={canonicalUrl}
+  alternateUrls={alternateUrls}
+>
+  <section class="not-found container">
+    <h1 class="not-found__code">404</h1>
+    <h2 class="not-found__title">{t['404'].title}</h2>
+    <p class="not-found__message">{t['404'].message}</p>
+    <a href={getRelativeLocaleUrl(locale!, '/')} class="not-found__link">
+      {t['404'].goHome} &rarr;
+    </a>
+  </section>
+</BaseLayout>
+
+<style>
+  .not-found {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 60vh;
+    gap: var(--space-md);
+    padding-block: var(--space-3xl);
+  }
+
+  .not-found__code {
+    font-size: 6rem;
+    font-weight: 800;
+    color: var(--color-primary);
+    line-height: 1;
+    margin-bottom: var(--space-sm);
+  }
+
+  .not-found__title {
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  .not-found__message {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-muted);
+    max-width: 400px;
+  }
+
+  .not-found__link {
+    display: inline-block;
+    margin-top: var(--space-md);
+    padding: var(--space-sm) var(--space-xl);
+    background-color: var(--color-primary);
+    color: white;
+    font-weight: 600;
+    border-radius: var(--radius);
+    transition: background-color 0.2s;
+  }
+
+  .not-found__link:hover {
+    background-color: var(--color-primary-hover);
+  }
+
+  @media (max-width: 640px) {
+    .not-found {
+      padding-block: var(--space-2xl);
+    }
+
+    .not-found__code {
+      font-size: 4rem;
+    }
+
+    .not-found__title {
+      font-size: var(--font-size-xl);
+    }
+  }
+</style>

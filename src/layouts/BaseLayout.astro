@@ -1,0 +1,92 @@
+---
+import '../styles/global.css';
+import SEOHead from '../components/SEOHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE } from '../config';
+import es from '../i18n/es.json';
+import en from '../i18n/en.json';
+
+export interface Props {
+  locale: string;
+  title?: string;
+  description?: string;
+  canonicalUrl?: string;
+  alternateUrls?: Record<string, string>;
+}
+
+const { locale, title, description, canonicalUrl, alternateUrls } = Astro.props;
+
+const pageTitle = title ?? SITE.title;
+const pageDescription = description ?? SITE.description;
+const pageCanonical = canonicalUrl ?? SITE.url;
+const pageAlternates: Record<string, string> = alternateUrls ?? {
+  es: SITE.url,
+  en: SITE.url,
+};
+const dicts: Record<string, typeof es> = { es, en };
+const t = dicts[locale];
+const skipLabel = t.a11y.skipToContent;
+---
+
+<!doctype html>
+<html lang={locale === 'es' ? 'es-AR' : 'en-US'}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <SEOHead
+      locale={locale}
+      title={pageTitle}
+      description={pageDescription}
+      canonicalUrl={pageCanonical}
+      alternateUrls={pageAlternates}
+    />
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link sr-only focus:not-sr-only">
+      {skipLabel}
+    </a>
+
+    <Header locale={locale} currentPath={Astro.url.pathname} />
+
+    <main id="main-content">
+      <slot />
+    </main>
+
+    <Footer locale={locale} />
+  </body>
+</html>
+
+<style is:global>
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  #main-content {
+    flex: 1;
+  }
+
+  .skip-link:focus {
+    position: fixed;
+    top: var(--space-sm);
+    left: var(--space-sm);
+    width: auto;
+    height: auto;
+    padding: var(--space-sm) var(--space-md);
+    background: var(--color-primary);
+    color: white;
+    z-index: 9999;
+    border-radius: var(--radius);
+    clip: auto;
+    white-space: normal;
+  }
+</style>

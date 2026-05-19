@@ -1,0 +1,76 @@
+---
+export interface Props {
+  title: string;
+  subtitle: string;
+  ctaText?: string;
+  ctaLink?: string;
+}
+
+const { title, subtitle, ctaText, ctaLink } = Astro.props;
+---
+
+<section class="hero">
+  <div class="hero__content container">
+    <h1 class="hero__title">{title}</h1>
+    <p class="hero__subtitle">{subtitle}</p>
+    {ctaText && ctaLink && (
+      <a href={ctaLink} class="hero__cta">{ctaText}</a>
+    )}
+  </div>
+</section>
+
+<style>
+  .hero {
+    background: linear-gradient(135deg, var(--color-bg) 0%, var(--color-bg-alt) 50%, #e0e7ff 100%);
+    padding-block: var(--space-3xl);
+    text-align: center;
+  }
+
+  .hero__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-lg);
+  }
+
+  .hero__title {
+    font-size: var(--font-size-3xl);
+    color: var(--color-text);
+    max-width: 640px;
+  }
+
+  .hero__subtitle {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-muted);
+    max-width: 560px;
+    line-height: 1.6;
+  }
+
+  .hero__cta {
+    display: inline-block;
+    padding: var(--space-sm) var(--space-xl);
+    background-color: var(--color-primary);
+    color: white;
+    font-weight: 600;
+    border-radius: var(--radius);
+    transition: background-color 0.2s;
+  }
+
+  .hero__cta:hover {
+    background-color: var(--color-primary-hover);
+  }
+
+  @media (max-width: 640px) {
+    .hero {
+      padding-block: var(--space-2xl);
+    }
+
+    .hero__title {
+      font-size: var(--font-size-2xl);
+    }
+
+    .hero__subtitle {
+      font-size: var(--font-size-base);
+    }
+  }
+</style>

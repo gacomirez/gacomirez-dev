@@ -1,0 +1,49 @@
+---
+import { getRelativeLocaleUrl } from 'astro:i18n';
+
+export interface Props {
+  locale: string;
+  currentPath: string;
+}
+
+const { locale, currentPath } = Astro.props;
+const otherLocale = locale === 'es' ? 'en' : 'es';
+// Strip the locale prefix from the current path so getRelativeLocaleUrl
+// treats it as a root-relative path, not a locale-prefixed one.
+const cleanPath = currentPath.replace(/^\/[a-z]{2}/, '') || '/';
+const otherUrl = getRelativeLocaleUrl(otherLocale, cleanPath);
+const label = otherLocale === 'es' ? 'ES' : 'EN';
+---
+
+<a
+  href={otherUrl}
+  hreflang={otherLocale}
+  rel="alternate"
+  aria-label={`Switch language to ${otherLocale === 'es' ? 'Spanish' : 'English'}`}
+  title={otherLocale === 'es' ? 'Español' : 'English'}
+  lang={otherLocale}
+  class="locale-switcher"
+>
+  {label}
+</a>
+
+<style>
+  .locale-switcher {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-xs) var(--space-sm);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--color-primary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    transition: background-color 0.2s, color 0.2s;
+  }
+
+  .locale-switcher:hover {
+    background-color: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
+  }
+</style>

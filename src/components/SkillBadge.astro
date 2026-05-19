@@ -1,0 +1,50 @@
+---
+export interface Props {
+  name: string;
+  level?: 'beginner' | 'intermediate' | 'advanced' | 'expert';
+}
+
+const { name, level } = Astro.props;
+const levelClass = level ? `skill-badge--${level}` : '';
+---
+
+<span class={`skill-badge ${levelClass}`}>{name}</span>
+
+<style>
+  .skill-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-xs) var(--space-sm);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    border-radius: 999px;
+    background-color: var(--color-bg-alt);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    white-space: nowrap;
+  }
+
+  .skill-badge--beginner {
+    background-color: #fef3c7;
+    color: #92400e;
+    border-color: #f59e0b;
+  }
+
+  .skill-badge--intermediate {
+    background-color: #dbeafe;
+    color: #1e40af;
+    border-color: #3b82f6;
+  }
+
+  .skill-badge--advanced {
+    background-color: #d1fae5;
+    color: #065f46;
+    border-color: #10b981;
+  }
+
+  .skill-badge--expert {
+    background-color: #ede9fe;
+    color: #5b21b6;
+    border-color: #8b5cf6;
+  }
+</style>

@@ -1,0 +1,182 @@
+---
+import { Image } from 'astro:assets';
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import LocaleSwitcher from './LocaleSwitcher.astro';
+import es from '../i18n/es.json';
+import en from '../i18n/en.json';
+import profileImg from '../assets/profile.jpg';
+
+export interface Props {
+  locale: string;
+  currentPath: string;
+}
+
+const { locale, currentPath } = Astro.props;
+const dicts: Record<string, typeof es> = { es, en };
+const t = dicts[locale];
+const navItems = t.nav.map((item: { label: string; path: string }) => ({
+  ...item,
+  href: getRelativeLocaleUrl(locale, item.path),
+}));
+---
+
+<header class="header">
+  <nav class="header__nav container" aria-label={locale === 'es' ? 'Navegación principal' : 'Main navigation'}>
+    <a href={getRelativeLocaleUrl(locale, '/')} class="header__logo" aria-label="Gabriel Ramírez — Inicio">
+      <Image src={profileImg} alt="" width={36} height={36} class="header__logo-img" />
+    </a>
+
+    <ul class="header__links">
+      {navItems.map((item: { label: string; href: string }) => {
+        const homeHref = getRelativeLocaleUrl(locale, '/');
+        const isActive = currentPath === item.href || (
+          currentPath.startsWith(item.href) && item.href !== homeHref
+        );
+        return (
+          <li>
+            <a href={item.href} class="header__link" aria-current={isActive ? 'page' : undefined}>
+              {item.label}
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+
+    <ul class="header__social">
+      <li>
+        <a href="mailto:ramirezgabrielnicolas@gmail.com" class="header__social-link header__social-link--email" aria-label="Email">
+          ramirezgabrielnicolas@gmail.com
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        </a>
+      </li>
+      <li>
+        <a href="https://instagram.com/gacomirez" target="_blank" rel="noopener noreferrer" class="header__social-link" aria-label="Instagram">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        </a>
+      </li>
+      <li>
+        <a href="https://linkedin.com/in/gacomirez" target="_blank" rel="noopener noreferrer" class="header__social-link" aria-label="LinkedIn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+      </li>
+    </ul>
+
+    <LocaleSwitcher locale={locale} currentPath={currentPath} />
+  </nav>
+</header>
+
+<style>
+  .header {
+    border-bottom: 1px solid var(--color-border);
+    background-color: var(--color-bg);
+  }
+
+  .header__nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+    padding-block: var(--space-md);
+  }
+
+  .header__logo {
+    display: flex;
+    align-items: center;
+    line-height: 0;
+  }
+
+  .header__logo-img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--color-border);
+    transition: border-color 0.2s;
+  }
+
+  .header__logo:hover .header__logo-img {
+    border-color: var(--color-primary);
+  }
+
+  .header__links {
+    display: flex;
+    gap: var(--space-md);
+    margin-right: auto;
+  }
+
+  .header__link {
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    color: var(--color-text-muted);
+    transition: color 0.2s;
+    padding-block: var(--space-xs);
+    position: relative;
+  }
+
+  .header__link:hover {
+    color: var(--color-primary);
+  }
+
+  .header__link[aria-current="page"] {
+    color: var(--color-primary);
+    font-weight: 600;
+  }
+
+  .header__link[aria-current="page"]::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: var(--color-primary);
+    border-radius: 1px;
+  }
+
+  .header__social {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .header__social-link {
+    display: flex;
+    align-items: center;
+    color: var(--color-text-muted);
+    transition: color 0.2s;
+    line-height: 0;
+    text-decoration: none;
+  }
+
+  .header__social-link:hover {
+    color: var(--color-primary);
+  }
+
+  .header__social-link svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .header__social-link--email {
+    gap: var(--space-xs);
+    font-size: var(--font-size-xs);
+    line-height: 1;
+  }
+
+  @media (max-width: 640px) {
+    .header__nav {
+      gap: var(--space-sm);
+      padding-block: var(--space-sm);
+    }
+
+    .header__links {
+      gap: var(--space-xs);
+    }
+
+    .header__link {
+      font-size: 0.8125rem;
+    }
+  }
+</style>

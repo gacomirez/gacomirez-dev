@@ -1,0 +1,188 @@
+---
+import SkillBadge from './SkillBadge.astro';
+
+export interface TimelineItem {
+  date: string;
+  title: string;
+  company: string;
+  description: string;
+  location?: string;
+  techs?: string[];
+}
+
+interface CollectionData {
+  role: string;
+  company: string;
+  startDate: Date;
+  endDate: Date | 'Actual' | 'Present';
+  description: string;
+  location?: string;
+  techs: string[];
+}
+
+interface CollectionEntry {
+  data: CollectionData;
+}
+
+export interface Props {
+  items?: TimelineItem[];
+  entries?: CollectionEntry[];
+  locale?: string;
+}
+
+const { items, entries, locale } = Astro.props;
+
+// Convert collection entries to timeline items if provided
+const resolvedItems: TimelineItem[] = entries
+  ? entries
+      .sort((a, b) => {
+        const aStart = a.data.startDate instanceof Date ? a.data.startDate.getTime() : 0;
+        const bStart = b.data.startDate instanceof Date ? b.data.startDate.getTime() : 0;
+        return bStart - aStart;
+      })
+      .map((entry) => {
+        const d = entry.data;
+
+        const pad = (n: number) => String(n).padStart(2, '0');
+
+        const fmtDate = (dt: Date): string =>
+          `${pad(dt.getUTCMonth() + 1)}/${dt.getUTCFullYear()}`;
+
+        const startStr = d.startDate instanceof Date
+          ? fmtDate(d.startDate)
+          : '';
+        const endStr = d.endDate === 'Present' || d.endDate === 'Actual'
+          ? (locale === 'es' ? 'Actualidad' : 'Present')
+          : d.endDate instanceof Date
+            ? fmtDate(d.endDate)
+            : '';
+        return {
+          date: `${startStr} — ${endStr}`,
+          title: d.role,
+          company: d.company,
+          description: d.description,
+          location: d.location,
+          techs: d.techs,
+        };
+      })
+  : (items ?? []);
+---
+
+<ol class="timeline">
+  {resolvedItems.map((item) => (
+    <li class="timeline__item">
+      <div class="timeline__dot" aria-hidden="true" />
+      <div class="timeline__content">
+        <time class="timeline__date">{item.date}</time>
+        <h3 class="timeline__title">{item.title}</h3>
+        <p class="timeline__company">{item.company}</p>
+        {item.location && <p class="timeline__location">{item.location}</p>}
+        <p class="timeline__description">{item.description}</p>
+        {item.techs && item.techs.length > 0 && (
+          <div class="timeline__techs">
+            {item.techs.map((tech) => (
+              <SkillBadge name={tech} />
+            ))}
+          </div>
+        )}
+      </div>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .timeline {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+    padding-left: var(--space-xl);
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 4px;
+    bottom: 4px;
+    width: 2px;
+    background-color: var(--color-border);
+  }
+
+  .timeline__item {
+    position: relative;
+  }
+
+  .timeline__dot {
+    position: absolute;
+    left: calc(-1 * var(--space-xl) + 2px);
+    top: 6px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--color-primary);
+    border: 2px solid var(--color-bg);
+    z-index: 1;
+  }
+
+  .timeline__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .timeline__date {
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    color: var(--color-primary);
+  }
+
+  .timeline__title {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  .timeline__company {
+    font-size: var(--font-size-base);
+    font-weight: 500;
+    color: var(--color-text-muted);
+  }
+
+  .timeline__location {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    font-style: italic;
+  }
+
+  .timeline__description {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    white-space: pre-line;
+  }
+
+  .timeline__techs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    margin-top: var(--space-xs);
+  }
+
+  @media (max-width: 640px) {
+    .timeline {
+      padding-left: var(--space-lg);
+      gap: var(--space-lg);
+    }
+
+    .timeline__dot {
+      left: calc(-1 * var(--space-lg) + 2px);
+      width: 10px;
+      height: 10px;
+    }
+
+    .timeline::before {
+      left: 5px;
+    }
+  }
+</style>

@@ -1,0 +1,75 @@
+---
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import es from '../i18n/es.json';
+import en from '../i18n/en.json';
+
+// Root 404 fallback — shows ES by default (Astro i18n fallback)
+const dicts: Record<string, typeof es> = { es, en };
+const t = dicts['es'];
+const homeUrl = getRelativeLocaleUrl('es', '/');
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={t['404'].message} />
+    <title>{t['404'].title} — Gabriel Ramírez</title>
+    <meta property="og:title" content={`${t['404'].title} — Gabriel Ramírez`} />
+    <meta property="og:description" content={t['404'].message} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_ES" />
+    <link rel="canonical" href="https://gacomirez.dev.ar/404.html" />
+    <style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body {
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #1f2937;
+        background: #ffffff;
+      }
+      .not-found {
+        text-align: center;
+        padding: 2rem;
+      }
+      .not-found__code {
+        font-size: 6rem;
+        font-weight: 800;
+        color: #2563eb;
+        line-height: 1;
+        margin-bottom: 1rem;
+      }
+      .not-found__title {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+      }
+      .not-found__message {
+        font-size: 1.125rem;
+        color: #6b7280;
+        margin-bottom: 1.5rem;
+      }
+      .not-found__link {
+        display: inline-block;
+        padding: 0.5rem 2rem;
+        background: #2563eb;
+        color: white;
+        text-decoration: none;
+        font-weight: 600;
+        border-radius: 8px;
+      }
+      .not-found__link:hover { background: #1d4ed8; }
+    </style>
+  </head>
+  <body>
+    <div class="not-found">
+      <h1 class="not-found__code">404</h1>
+      <h2 class="not-found__title">{t['404'].title}</h2>
+      <p class="not-found__message">{t['404'].message}</p>
+      <a href={homeUrl} class="not-found__link">{t['404'].goHome} &rarr;</a>
+    </div>
+  </body>
+</html>

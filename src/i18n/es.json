@@ -1,0 +1,49 @@
+{
+  "site": {
+    "title": "Gabriel Ramírez | Desarrollador Senior",
+    "description": "Portfolio profesional — desarrollo de software, proyectos y artículos técnicos"
+  },
+  "nav": [
+    { "label": "Inicio", "path": "/" },
+    { "label": "Sobre mí", "path": "/about/" }
+  ],
+  "hero": {
+    "name": "Gabriel Ramírez",
+    "title": "Desarrollador Senior",
+    "tagline": "7+ años construyendo software escalable y de calidad",
+    "subtitle": "Dev | Analista Senior Genexus | Ruby on Rails"
+  },
+  "home": {
+    "featuredTitle": "Proyectos destacados",
+    "skillsTitle": "Tecnologías",
+    "experienceTitle": "Experiencia",
+    "viewAll": "Ver todos",
+    "aboutCta": "Sobre mí"
+  },
+  "about": {
+    "title": "Sobre mí",
+    "experience": "Experiencia",
+    "education": "Educación",
+    "downloadCv": "Descargar CV"
+  },
+  "projects": {
+    "featuredTitle": "Proyectos destacados",
+    "empty": "No hay proyectos aún"
+  },
+  "social": {
+    "email": "ramirezgabrielnicolas@gmail.com",
+    "instagram": "@gacomirez",
+    "linkedin": "linkedin.com/in/gacomirez"
+  },
+  "footer": {
+    "copyright": "© {year} Gabriel Ramírez. Todos los derechos reservados."
+  },
+  "404": {
+    "title": "Página no encontrada",
+    "message": "La página que buscas no existe.",
+    "goHome": "Volver al inicio"
+  },
+  "a11y": {
+    "skipToContent": "Saltar al contenido principal"
+  }
+}

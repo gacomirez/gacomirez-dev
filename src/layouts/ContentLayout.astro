@@ -1,0 +1,145 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+export interface Props {
+  locale: string;
+  title: string;
+  description?: string;
+  canonicalUrl?: string;
+  alternateUrls?: Record<string, string>;
+  date?: Date;
+  tags?: string[];
+}
+
+const { locale, title, description, canonicalUrl, alternateUrls, date, tags } = Astro.props;
+---
+
+<BaseLayout
+  locale={locale}
+  title={title}
+  description={description}
+  canonicalUrl={canonicalUrl}
+  alternateUrls={alternateUrls}
+>
+  <article class="content-detail container">
+    <header class="content-detail__header">
+      <h1 class="content-detail__title">{title}</h1>
+      {date && (
+        <time class="content-detail__date" datetime={date.toISOString()}>
+          {new Intl.DateTimeFormat(locale === 'es' ? 'es-AR' : 'en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          }).format(new Date(date))}
+        </time>
+      )}
+    </header>
+
+    {tags && tags.length > 0 && (
+      <div class="content-detail__tags">
+        {tags.map((tag) => (
+          <span class="content-detail__tag">{tag}</span>
+        ))}
+      </div>
+    )}
+
+    <div class="content-detail__body">
+      <slot />
+    </div>
+
+    <footer class="content-detail__footer">
+      <slot name="back" />
+    </footer>
+  </article>
+</BaseLayout>
+
+<style>
+  .content-detail {
+    padding-block: var(--space-2xl);
+    max-width: 720px;
+  }
+
+  .content-detail__header {
+    margin-bottom: var(--space-lg);
+  }
+
+  .content-detail__title {
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    margin-bottom: var(--space-sm);
+  }
+
+  .content-detail__date {
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    color: var(--color-text-muted);
+  }
+
+  .content-detail__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    margin-bottom: var(--space-lg);
+  }
+
+  .content-detail__tag {
+    display: inline-block;
+    padding: 2px var(--space-sm);
+    font-size: 0.75rem;
+    font-weight: 500;
+    border-radius: 999px;
+    background-color: var(--color-bg-alt);
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-border);
+  }
+
+  .content-detail__body {
+    font-size: var(--font-size-base);
+    line-height: 1.8;
+    color: var(--color-text);
+  }
+
+  .content-detail__body h2 {
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    margin-top: var(--space-xl);
+    margin-bottom: var(--space-md);
+  }
+
+  .content-detail__body h3 {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    margin-top: var(--space-lg);
+    margin-bottom: var(--space-sm);
+  }
+
+  .content-detail__body p {
+    margin-bottom: var(--space-md);
+  }
+
+  .content-detail__body ul,
+  .content-detail__body ol {
+    padding-left: var(--space-lg);
+    margin-bottom: var(--space-md);
+  }
+
+  .content-detail__body li {
+    margin-bottom: var(--space-xs);
+  }
+
+  .content-detail__footer {
+    margin-top: var(--space-2xl);
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--color-border);
+  }
+
+  @media (max-width: 640px) {
+    .content-detail {
+      padding-block: var(--space-xl);
+    }
+
+    .content-detail__title {
+      font-size: var(--font-size-xl);
+    }
+  }
+</style>

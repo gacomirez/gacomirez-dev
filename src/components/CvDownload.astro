@@ -1,0 +1,42 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+
+export interface Props {
+  cvUrl: string;
+  label: string;
+}
+
+const { cvUrl, label } = Astro.props;
+const publicPath = path.join(process.cwd(), 'public', cvUrl.replace(/^\//, ''));
+const fileExists = fs.existsSync(publicPath);
+---
+
+{fileExists && (
+  <a href={cvUrl} class="cv-download" download aria-label={label}>
+    <span class="cv-download__icon" aria-hidden="true">&#8595;</span>
+    {label}
+  </a>
+)}
+
+<style>
+  .cv-download {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-xl);
+    background-color: var(--color-primary);
+    color: white;
+    font-weight: 600;
+    border-radius: var(--radius);
+    transition: background-color 0.2s;
+  }
+
+  .cv-download:hover {
+    background-color: var(--color-primary-hover);
+  }
+
+  .cv-download__icon {
+    font-size: var(--font-size-lg);
+  }
+</style>

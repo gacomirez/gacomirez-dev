@@ -1,0 +1,232 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import { SITE } from '../../config';
+import es from '../../i18n/es.json';
+import en from '../../i18n/en.json';
+import Hero from '../../components/Hero.astro';
+import SkillBadge from '../../components/SkillBadge.astro';
+import Timeline from '../../components/Timeline.astro';
+
+export async function getStaticPaths() {
+  return [
+    { params: { locale: 'es' } },
+    { params: { locale: 'en' } },
+  ];
+}
+
+const { locale } = Astro.params;
+const dicts: Record<string, typeof es> = { es, en };
+const t = dicts[locale!];
+const canonicalUrl = `${SITE.url}/${locale}/`;
+const alternateUrls: Record<string, string> = {
+  es: `${SITE.url}/es/`,
+  en: `${SITE.url}/en/`,
+};
+
+// Featured projects (inline data)
+const featuredProjects = [
+  {
+    title: 'Digital Retail Solution (DRS)',
+    description: locale === 'es'
+      ? 'Solución de retail digital para empresa Brinks, rubro transporte de valores.'
+      : 'Digital retail solution for Brinks, cash transportation sector.',
+    techStack: ['Genexus', 'APIs REST'],
+    links: { github: '#', live: '#' },
+    featured: true,
+  },
+  {
+    title: locale === 'es' ? 'Sistema Microcréditos' : 'Microcredit System',
+    description: locale === 'es'
+      ? 'Producto financiero para docentes en Paraguay. Migración, desarrollo e implementación con Genexus.'
+      : 'Financial product for teachers in Paraguay. Migration, development and implementation with Genexus.',
+    techStack: ['Genexus', 'Ruby on Rails', 'Python'],
+    links: { github: '#', live: '#' },
+    featured: true,
+  },
+  {
+    title: locale === 'es' ? 'API MercadoPago' : 'MercadoPago API',
+    description: locale === 'es'
+      ? 'API REST en Genexus para procesar pagos a través de MercadoPago.'
+      : 'REST API in Genexus to process payments via MercadoPago.',
+    techStack: ['Genexus', 'APIs REST'],
+    links: { github: '#', live: '#' },
+    featured: true,
+  },
+];
+
+// Top skills from CV
+const skills = [
+  { name: 'Genexus', level: 'expert' as const },
+  { name: 'Ruby on Rails', level: 'advanced' as const },
+  { name: 'Python', level: 'intermediate' as const },
+];
+
+// Experience summary from Content Collection
+const allExperience = await getCollection('experience');
+const experienceEntries = allExperience
+  .filter(p => p.data.locale === locale)
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 3);
+---
+
+<BaseLayout
+  locale={locale!}
+  title={`${t.hero.name} — ${t.hero.title} | Genexus, Ruby on Rails, Python`}
+  description={t.site.description}
+  canonicalUrl={canonicalUrl}
+  alternateUrls={alternateUrls}
+>
+  <Hero
+    title={t.hero.name}
+    subtitle={t.hero.subtitle}
+    ctaText={t.home.aboutCta || 'Sobre mí'}
+    ctaLink={getRelativeLocaleUrl(locale!, '/about/')}
+  />
+
+  <!-- Skills Section -->
+  <section class="section container">
+    <h2 class="section__title">{t.home.skillsTitle}</h2>
+    <div class="skills-grid">
+      {skills.map((skill) => (
+        <SkillBadge name={skill.name} level={skill.level} />
+      ))}
+    </div>
+  </section>
+
+  <!-- Featured Projects -->
+  {featuredProjects.length > 0 && (
+    <section class="section container">
+      <h2 class="section__title">{t.home.featuredTitle}</h2>
+      <div class="projects-grid">
+        {featuredProjects.map((p) => (
+          <article class="project-card">
+            <h3 class="project-card__title">{p.title}</h3>
+            <p class="project-card__description">{p.description}</p>
+            <div class="project-card__techs">
+              {p.techStack.map((tech: string) => (
+                <span class="skill-badge">{tech}</span>
+              ))}
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <!-- Experience Snapshot -->
+  <section class="section container">
+    <h2 class="section__title">{t.home.experienceTitle}</h2>
+    <Timeline entries={experienceEntries} locale={locale!} />
+    <div class="section__cta">
+      <a href={getRelativeLocaleUrl(locale!, '/about/')} class="cta-link">
+        {t.home.viewAll} &rarr;
+      </a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .section {
+    padding-block: var(--space-2xl);
+  }
+
+  .section__title {
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    margin-bottom: var(--space-lg);
+    color: var(--color-text);
+  }
+
+  .section__cta {
+    margin-top: var(--space-lg);
+    text-align: center;
+  }
+
+  .cta-link {
+    display: inline-block;
+    font-weight: 600;
+    color: var(--color-primary);
+    transition: color 0.2s;
+  }
+
+  .cta-link:hover {
+    color: var(--color-primary-hover);
+  }
+
+  .skills-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+
+  @media (min-width: 641px) {
+    .projects-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1025px) {
+    .projects-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .project-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    padding: var(--space-lg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-bg);
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+
+  .project-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+  }
+
+  .project-card__title {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  .project-card__description {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+  }
+
+  .project-card__techs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+  }
+
+  .skill-badge {
+    display: inline-block;
+    padding: 2px var(--space-sm);
+    font-size: 0.75rem;
+    font-weight: 500;
+    border-radius: 999px;
+    background-color: var(--color-bg-alt);
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-border);
+  }
+
+  @media (max-width: 640px) {
+    .section {
+      padding-block: var(--space-xl);
+    }
+  }
+</style>

@@ -1,0 +1,237 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { SITE } from '../../config';
+import es from '../../i18n/es.json';
+import en from '../../i18n/en.json';
+import Timeline from '../../components/Timeline.astro';
+import CvDownload from '../../components/CvDownload.astro';
+import profileImg from '../../assets/profile.jpg';
+
+export async function getStaticPaths() {
+  return [
+    { params: { locale: 'es' } },
+    { params: { locale: 'en' } },
+  ];
+}
+
+const { locale } = Astro.params;
+const dicts: Record<string, typeof es> = { es, en };
+const t = dicts[locale!];
+const canonicalUrl = `${SITE.url}/${locale}/about/`;
+const alternateUrls: Record<string, string> = {
+  es: `${SITE.url}/es/about/`,
+  en: `${SITE.url}/en/about/`,
+};
+
+// Bio text per locale
+const bio = locale === 'es'
+  ? {
+      intro: 'Genexus Senior Analyst certificado, con más de 7 años de experiencia, enfocado en el aprendizaje activo de nuevas tecnologías priorizando las buenas prácticas y el trabajo en equipo para garantizar calidad en cada proyecto. Lideré el desarrollo de sistemas en rubro financiero, optimizando e implementando nuevos procesos generando impacto positivo en el negocio. Desarrollador con experiencia en Genexus, versiones 16, 17 y 18, Ruby on Rails y Python, aplicando estas tecnologías para crear soluciones eficientes y escalables.',
+    }
+  : {
+      intro: 'Certified Genexus Senior Analyst with over 7 years of experience, focused on actively learning new technologies while prioritizing best practices and teamwork to ensure quality in every project. I led the development of systems in the financial sector, optimizing and implementing new processes that generated a positive impact on the business. Developer experienced in Genexus versions 16, 17, and 18, Ruby on Rails, and Python, applying these technologies to create efficient and scalable solutions.',
+    };
+
+// Experience from Content Collection
+const allExperience = await getCollection('experience');
+const experienceEntries = allExperience
+  .filter(p => p.data.locale === locale)
+  .sort((a, b) => a.data.order - b.data.order);
+
+// Education from Content Collection
+const allEducation = await getCollection('education');
+const educationEntries = allEducation
+  .filter(e => e.data.locale === locale)
+  .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+---
+
+<BaseLayout
+  locale={locale!}
+  title={`${t.about.title} — ${SITE.title}`}
+  description={bio.intro}
+  canonicalUrl={canonicalUrl}
+  alternateUrls={alternateUrls}
+>
+  <!-- Bio Section -->
+  <section class="section bio container">
+    <h1 class="bio__title">{t.about.title}</h1>
+    <div class="bio__layout">
+      <!-- Profile photo -->
+      <div class="bio__photo">
+        <Image src={profileImg} alt="Gabriel Ramírez" width={160} height={160} class="bio__photo-img" />
+      </div>
+      <div class="bio__content">
+        <p class="bio__text">{bio.intro}</p>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Experience Timeline -->
+  <section class="section container">
+    <h2 class="section__title">{t.about.experience}</h2>
+    <Timeline entries={experienceEntries} locale={locale!} />
+  </section>
+
+  <!-- Education -->
+  <section class="section container">
+    <h2 class="section__title">{t.about.education}</h2>
+    <div class="education-grid">
+      {educationEntries.map((edu) => (
+        <div class="education-card">
+          <h3 class="education-card__title">{edu.data.title}</h3>
+          <p class="education-card__institution">{edu.data.institution}</p>
+          {edu.data.location && <p class="education-card__location">{edu.data.location}</p>}
+          <p class="education-card__date">{edu.data.date}</p>
+          {edu.data.description && <p class="education-card__description">{edu.data.description}</p>}
+        </div>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .section {
+    padding-block: var(--space-2xl);
+  }
+
+  .section__title {
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    margin-bottom: var(--space-lg);
+    color: var(--color-text);
+  }
+
+  .bio__title {
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    margin-bottom: var(--space-lg);
+  }
+
+  .bio__layout {
+    display: flex;
+    gap: var(--space-xl);
+    align-items: flex-start;
+  }
+
+  .bio__photo {
+    flex-shrink: 0;
+  }
+
+  .bio__photo-img {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--color-border);
+  }
+
+  .bio__avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background-color: var(--color-primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    user-select: none;
+  }
+
+  .bio__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    flex: 1;
+    min-width: 0;
+  }
+
+  .bio__text {
+    font-size: var(--font-size-base);
+    color: var(--color-text);
+    line-height: 1.7;
+  }
+
+  .bio__actions {
+    margin-top: var(--space-lg);
+  }
+
+  .education-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-lg);
+  }
+
+  .education-card {
+    padding: var(--space-lg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-bg);
+  }
+
+  .education-card__title {
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: var(--space-xs);
+  }
+
+  .education-card__institution {
+    font-size: var(--font-size-sm);
+    color: var(--color-primary);
+    font-weight: 500;
+    margin-bottom: var(--space-xs);
+  }
+
+  .education-card__location {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    font-style: italic;
+    margin-bottom: var(--space-xs);
+  }
+
+  .education-card__date {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-xs);
+  }
+
+  .education-card__description {
+    font-size: var(--font-size-sm);
+    color: var(--color-text);
+    line-height: 1.6;
+    margin-top: var(--space-xs);
+  }
+
+  @media (max-width: 640px) {
+    .section {
+      padding-block: var(--space-xl);
+    }
+
+    .bio__layout {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .bio__avatar {
+      width: 100px;
+      height: 100px;
+      font-size: var(--font-size-xl);
+    }
+
+    .education-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (min-width: 641px) {
+    .bio__layout {
+      flex-direction: row;
+    }
+  }
+</style>

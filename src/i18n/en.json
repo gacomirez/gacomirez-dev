@@ -1,0 +1,49 @@
+{
+  "site": {
+    "title": "Gabriel Ramírez | Senior Developer",
+    "description": "Professional portfolio — software development, projects, and technical articles"
+  },
+  "nav": [
+    { "label": "Home", "path": "/" },
+    { "label": "About", "path": "/about/" }
+  ],
+  "hero": {
+    "name": "Gabriel Ramírez",
+    "title": "Senior Developer",
+    "tagline": "7+ years building scalable, high-quality software",
+    "subtitle": "Dev | Senior Genexus Analyst | Ruby on Rails"
+  },
+  "home": {
+    "featuredTitle": "Featured projects",
+    "skillsTitle": "Technologies",
+    "experienceTitle": "Experience",
+    "viewAll": "View all",
+    "aboutCta": "About me"
+  },
+  "about": {
+    "title": "About me",
+    "experience": "Experience",
+    "education": "Education",
+    "downloadCv": "Download CV"
+  },
+  "projects": {
+    "featuredTitle": "Featured projects",
+    "empty": "No projects yet"
+  },
+  "social": {
+    "email": "ramirezgabrielnicolas@gmail.com",
+    "instagram": "@gacomirez",
+    "linkedin": "linkedin.com/in/gacomirez"
+  },
+  "footer": {
+    "copyright": "© {year} Gabriel Ramírez. All rights reserved."
+  },
+  "404": {
+    "title": "Page not found",
+    "message": "The page you are looking for does not exist.",
+    "goHome": "Go back home"
+  },
+  "a11y": {
+    "skipToContent": "Skip to main content"
+  }
+}
