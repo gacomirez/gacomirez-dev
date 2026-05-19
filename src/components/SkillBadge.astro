@@ -6,14 +6,35 @@ export interface Props {
 
 const { name, level } = Astro.props;
 const levelClass = level ? `skill-badge--${level}` : '';
+
+// SVG icons for each technology (Heroicons-based)
+const techIcons: Record<string, string> = {
+  'Genexus': '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>',
+  'Ruby on Rails': '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L22 8.5V15.5L12 22L2 15.5V8.5L12 2z"/><path d="M12 2L12 22"/><path d="M2 8.5L22 8.5"/></svg>',
+  'Python': '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4C8 2.9 8.9 2 10 2H14C15.1 2 16 2.9 16 4V8H8V4Z"/><path d="M16 20C16 21.1 15.1 22 14 22H10C8.9 22 8 21.1 8 20V16H16V20Z"/><path d="M8 8H16"/><path d="M8 16H16"/></svg>',
+  'APIs REST': '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12H19"/><path d="M12 5L5 12L12 19"/></svg>',
+  'REST APIs': '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12H19"/><path d="M12 5L5 12L12 19"/></svg>',
+  '.NET': '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5" fill="currentColor"/><circle cx="15.5" cy="8.5" r="1.5" fill="currentColor"/><circle cx="8.5" cy="15.5" r="1.5" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.5" fill="currentColor"/></svg>',
+  'Laravel': '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7L12 12L22 7L12 2Z"/><path d="M2 17L12 22L22 17"/><path d="M2 12L12 17L22 12"/></svg>',
+  'PHP': '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14H12L11 22L21 10H12L13 2Z"/></svg>',
+  'Bases de datos': '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3"/></svg>',
+  'Databases': '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3"/></svg>',
+};
+
+const icon = techIcons[name] || '';
+const iconHtml = icon ? `<span class="skill-badge__icon">${icon}</span>` : '';
 ---
 
-<span class={`skill-badge ${levelClass}`}>{name}</span>
+<span class={`skill-badge ${levelClass}`}>
+  {icon && <span class="skill-badge__icon" set:html={icon} />}
+  <span class="skill-badge__label">{name}</span>
+</span>
 
 <style>
   .skill-badge {
     display: inline-flex;
     align-items: center;
+    gap: var(--space-xs);
     padding: var(--space-xs) var(--space-sm);
     font-size: var(--font-size-sm);
     font-weight: 500;
@@ -22,6 +43,12 @@ const levelClass = level ? `skill-badge--${level}` : '';
     color: var(--color-text);
     border: 1px solid var(--color-border);
     white-space: nowrap;
+  }
+
+  .skill-badge__icon {
+    display: inline-flex;
+    align-items: center;
+    line-height: 0;
   }
 
   .skill-badge--beginner {
