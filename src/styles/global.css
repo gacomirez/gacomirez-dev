@@ -59,17 +59,17 @@ ol {
 :root {
   color-scheme: light dark;
 
-  /* Colors — Light (default) */
-  --color-primary: #2563eb;
-  --color-primary-hover: #1d4ed8;
-  --color-text: #1f2937;
-  --color-text-muted: #6b7280;
-  --color-bg: #ffffff;
-  --color-bg-alt: #f9fafb;
-  --color-border: #e5e7eb;
-  --color-accent: #f59e0b;
-  --color-success: #10b981;
-  --color-error: #ef4444;
+  /* Colors — Dark (default) */
+  --color-primary: #60a5fa;
+  --color-primary-hover: #93c5fd;
+  --color-text: #f1f5f9;
+  --color-text-muted: #94a3b8;
+  --color-bg: #0f172a;
+  --color-bg-alt: #1e293b;
+  --color-border: #334155;
+  --color-accent: #fbbf24;
+  --color-success: #34d399;
+  --color-error: #f87171;
 
   /* Spacing */
   --space-xs: 0.25rem;
@@ -97,10 +97,10 @@ ol {
   --radius: 8px;
   --radius-lg: 12px;
 
-  /* Hero gradient (light default) */
-  --color-hero-gradient: linear-gradient(135deg, var(--color-bg) 0%, var(--color-bg-alt) 50%, #e0e7ff 100%);
-  --color-hero-glow-primary: rgba(37, 99, 235, 0.03);
-  --color-hero-glow-accent: rgba(245, 158, 11, 0.03);
+  /* Hero gradient (dark default) */
+  --color-hero-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #1e1b4b 100%);
+  --color-hero-glow-primary: rgba(96, 165, 250, 0.06);
+  --color-hero-glow-accent: rgba(251, 191, 36, 0.05);
 
   /* Transition durations */
   --transition-fast: 0.2s;
@@ -285,22 +285,22 @@ h3 {
   }
 }
 
-/* ===== Dark Mode ===== */
-@media (prefers-color-scheme: dark) {
+/* ===== Light Mode (for users who prefer light) ===== */
+@media (prefers-color-scheme: light) {
   :root {
-    --color-primary: #60a5fa;
-    --color-primary-hover: #93c5fd;
-    --color-text: #f1f5f9;
-    --color-text-muted: #94a3b8;
-    --color-bg: #0f172a;
-    --color-bg-alt: #1e293b;
-    --color-border: #334155;
-    --color-accent: #fbbf24;
-    --color-success: #34d399;
-    --color-error: #f87171;
+    --color-primary: #2563eb;
+    --color-primary-hover: #1d4ed8;
+    --color-text: #1f2937;
+    --color-text-muted: #6b7280;
+    --color-bg: #ffffff;
+    --color-bg-alt: #f9fafb;
+    --color-border: #e5e7eb;
+    --color-accent: #f59e0b;
+    --color-success: #10b981;
+    --color-error: #ef4444;
   }
 
-  --color-hero-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #1e1b4b 100%);
-  --color-hero-glow-primary: rgba(96, 165, 250, 0.06);
-  --color-hero-glow-accent: rgba(251, 191, 36, 0.05);
+  --color-hero-gradient: linear-gradient(135deg, #ffffff 0%, #f9fafb 50%, #e0e7ff 100%);
+  --color-hero-glow-primary: rgba(37, 99, 235, 0.03);
+  --color-hero-glow-accent: rgba(245, 158, 11, 0.03);
 }
