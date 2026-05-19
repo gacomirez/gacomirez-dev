@@ -68,9 +68,9 @@ const resolvedItems: TimelineItem[] = entries
   : (items ?? []);
 ---
 
-<ol class="timeline">
+<ol class="timeline animate-stagger">
   {resolvedItems.map((item) => (
-    <li class="timeline__item">
+    <li class="timeline__item animate-fade-in-up">
       <div class="timeline__dot" aria-hidden="true" />
       <div class="timeline__content">
         <time class="timeline__date">{item.date}</time>
@@ -123,6 +123,11 @@ const resolvedItems: TimelineItem[] = entries
     background-color: var(--color-primary);
     border: 2px solid var(--color-bg);
     z-index: 1;
+    transition: box-shadow var(--transition-fast);
+  }
+
+  .timeline__item:hover .timeline__dot {
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
   }
 
   .timeline__content {
@@ -183,6 +188,10 @@ const resolvedItems: TimelineItem[] = entries
 
     .timeline::before {
       left: 5px;
+    }
+
+    .timeline__title {
+      font-size: var(--font-size-base);
     }
   }
 </style>

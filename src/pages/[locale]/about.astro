@@ -55,14 +55,14 @@ const educationEntries = allEducation
   alternateUrls={alternateUrls}
 >
   <!-- Bio Section -->
-  <section class="section bio container">
+  <section class="section bio container animate-fade-in-up">
     <h1 class="bio__title">{t.about.title}</h1>
     <div class="bio__layout">
       <!-- Profile photo -->
-      <div class="bio__photo">
+      <div class="bio__photo animate-fade-in-up" style="animation-delay: 100ms">
         <Image src={profileImg} alt="Gabriel Ramírez" width={160} height={160} class="bio__photo-img" />
       </div>
-      <div class="bio__content">
+      <div class="bio__content animate-fade-in-up" style="animation-delay: 200ms">
         <p class="bio__text">{bio.intro}</p>
       </div>
     </div>
@@ -70,17 +70,17 @@ const educationEntries = allEducation
   </section>
 
   <!-- Experience Timeline -->
-  <section class="section container">
+  <section class="section container animate-fade-in-up" style="animation-delay: 300ms">
     <h2 class="section__title">{t.about.experience}</h2>
     <Timeline entries={experienceEntries} locale={locale!} />
   </section>
 
   <!-- Education -->
-  <section class="section container">
+  <section class="section container animate-fade-in-up" style="animation-delay: 400ms">
     <h2 class="section__title">{t.about.education}</h2>
-    <div class="education-grid">
+    <div class="education-grid animate-stagger">
       {educationEntries.map((edu) => (
-        <div class="education-card">
+        <div class="education-card animate-fade-in-up">
           <h3 class="education-card__title">{edu.data.title}</h3>
           <p class="education-card__institution">{edu.data.institution}</p>
           {edu.data.location && <p class="education-card__location">{edu.data.location}</p>}
@@ -172,6 +172,12 @@ const educationEntries = allEducation
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
     background-color: var(--color-bg);
+    transition: box-shadow var(--transition-base), transform var(--transition-base);
+  }
+
+  .education-card:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
   }
 
   .education-card__title {

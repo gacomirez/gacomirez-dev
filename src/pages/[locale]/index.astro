@@ -86,7 +86,7 @@ const experienceEntries = allExperience
   />
 
   <!-- Skills Section -->
-  <section class="section container">
+  <section class="section container animate-fade-in-up" style="animation-delay: 300ms">
     <h2 class="section__title">{t.home.skillsTitle}</h2>
     <div class="skills-grid">
       {skills.map((skill) => (
@@ -97,7 +97,7 @@ const experienceEntries = allExperience
 
   <!-- Featured Projects -->
   {featuredProjects.length > 0 && (
-    <section class="section container">
+    <section class="section container animate-fade-in-up" style="animation-delay: 400ms">
       <h2 class="section__title">{t.home.featuredTitle}</h2>
       <div class="projects-grid">
         {featuredProjects.map((p) => (
@@ -116,7 +116,7 @@ const experienceEntries = allExperience
   )}
 
   <!-- Experience Snapshot -->
-  <section class="section container">
+  <section class="section container animate-fade-in-up" style="animation-delay: 500ms">
     <h2 class="section__title">{t.home.experienceTitle}</h2>
     <Timeline entries={experienceEntries} locale={locale!} />
     <div class="section__cta">
@@ -148,11 +148,12 @@ const experienceEntries = allExperience
     display: inline-block;
     font-weight: 600;
     color: var(--color-primary);
-    transition: color 0.2s;
+    transition: color var(--transition-fast), transform var(--transition-fast);
   }
 
   .cta-link:hover {
     color: var(--color-primary-hover);
+    transform: translateX(4px);
   }
 
   .skills-grid {
@@ -187,12 +188,12 @@ const experienceEntries = allExperience
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
     background-color: var(--color-bg);
-    transition: box-shadow 0.2s, transform 0.2s;
+    transition: box-shadow var(--transition-base), transform var(--transition-base);
   }
 
   .project-card:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    transform: translateY(-4px);
   }
 
   .project-card__title {
@@ -211,6 +212,7 @@ const experienceEntries = allExperience
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-xs);
+    margin-top: auto;
   }
 
   .skill-badge {

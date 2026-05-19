@@ -48,13 +48,17 @@ const year = new Date().getFullYear();
   }
 
   .footer__social a {
+    display: inline-flex;
+    align-items: center;
     font-size: var(--font-size-sm);
     color: var(--color-text-muted);
-    transition: color 0.2s;
+    transition: color var(--transition-fast), transform var(--transition-fast);
+    line-height: 0;
   }
 
   .footer__social a:hover {
     color: var(--color-primary);
+    transform: scale(1.15);
   }
 
   .footer__copyright {
