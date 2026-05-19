@@ -1,4 +1,16 @@
 ---
 import { getRelativeLocaleUrl } from 'astro:i18n';
-return Astro.redirect(getRelativeLocaleUrl('es', '/'));
+const esUrl = getRelativeLocaleUrl('es', '/');
 ---
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="refresh" content={`0;url=${esUrl}`} />
+  <link rel="canonical" href={`${Astro.site}es/`} />
+  <title>Gabriel Ramírez</title>
+</head>
+<body>
+  <a href={esUrl}>Ir al sitio</a>
+</body>
+</html>

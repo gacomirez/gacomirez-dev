@@ -285,22 +285,4 @@ h3 {
   }
 }
 
-/* ===== Light Mode (for users who prefer light) ===== */
-@media (prefers-color-scheme: light) {
-  :root {
-    --color-primary: #2563eb;
-    --color-primary-hover: #1d4ed8;
-    --color-text: #1f2937;
-    --color-text-muted: #6b7280;
-    --color-bg: #ffffff;
-    --color-bg-alt: #f9fafb;
-    --color-border: #e5e7eb;
-    --color-accent: #f59e0b;
-    --color-success: #10b981;
-    --color-error: #ef4444;
-  }
-
-  --color-hero-gradient: linear-gradient(135deg, #ffffff 0%, #f9fafb 50%, #e0e7ff 100%);
-  --color-hero-glow-primary: rgba(37, 99, 235, 0.03);
-  --color-hero-glow-accent: rgba(245, 158, 11, 0.03);
-}
+/* ===== Always Dark — light mode removed intentionally ===== */
